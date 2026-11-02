@@ -215,4 +215,61 @@
             const filterBatch = document.getElementById('filterBatch').value.trim();
 
             try {
-                const querySnapshot = await getDocs(collection(db,
+                const querySnapshot = await getDocs(collection(db, "profiles"));
+                if (querySnapshot.empty) {
+                    listContainer.innerHTML = '<p class="text-gray-500">No profiles found.</p>';
+                    return;
+                }
+
+                listContainer.innerHTML = '';
+                let count = 0;
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+
+                    // Search filter logic
+                    if (filterInst && !data.searchIndex.includes(filterInst)) return;
+                    if (filterBatch) {
+                        const bNum = Number(filterBatch);
+                        if (data.primaryYear !== bNum && data.highYear !== bNum && data.interYear !== bNum && data.higherYear !== bNum) {
+                            return;
+                        }
+                    }
+
+                    count++;
+                    listContainer.innerHTML += `
+                        <div class="p-5 border border-gray-200 rounded-xl bg-gray-50 shadow-sm space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg text-blue-900">${data.fullName}</h3>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded font-semibold">${data.profileType}</span>
+                                </div>
+                                <span class="text-xs text-gray-500">Mobile: ${data.mobile}</span>
+                            </div>
+                            
+                            <div class="text-sm space-y-1 text-gray-700 bg-white p-3 rounded-lg border">
+                                ${data.primarySchool ? `<p><strong>Primary (1-5th):</strong> ${data.primarySchool} ${data.primaryYear ? `(${data.primaryYear})` : ''}</p>` : ''}
+                                ${data.highSchool ? `<p><strong>High School (6-10th):</strong> ${data.highSchool} ${data.highYear ? `(${data.highYear})` : ''}</p>` : ''}
+                                ${data.interCollege ? `<p><strong>Inter / Diploma:</strong> ${data.interCollege} ${data.interYear ? `(${data.interYear})` : ''}</p>` : ''}
+                                ${data.higherCollege ? `<p><strong>Higher Edu (Degree/PG):</strong> ${data.higherCollege} ${data.higherYear ? `(${data.higherYear})` : ''}</p>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (count === 0) {
+                    listContainer.innerHTML = '<p class="text-gray-500">No matching profiles found.</p>';
+                }
+            } catch (error) {
+                console.error("Error loading profiles:", error);
+                listContainer.innerHTML = '<p class="text-red-500">Failed to load profiles.</p>';
+            }
+        }
+
+        document.getElementById('filterInst').addEventListener('input', loadProfiles);
+        document.getElementById('filterBatch').addEventListener('input', loadProfiles);
+
+        loadProfiles();
+    </script>
+</body>
+</html>
