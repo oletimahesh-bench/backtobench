@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BackToBench.in - Alumni & Community Directory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-md bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700 p-6">
+        
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-indigo-400">BackToBench.in</h1>
+            <p class="text-xs text-slate-400 mt-1">Connect with your school & college friends</p>
+        </div>
+
+        <!-- SCREEN 1: Mobile + Google Auth + 4-Digit PIN -->
+        <div id="screen-1" class="space-y-4">
+            <h2 class="text-lg font-semibold text-slate-200 border-b border-slate-700 pb-2">Step 1: Login & Security</h2>
+            
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Mobile Number</label>
+                <input type="tel" id="mobile-input" placeholder="e.g., 9848012345" maxlength="10" 
+                    class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <!-- Google Auth Simulation -->
+            <button onclick="simulateGoogleAuth()" class="w-full flex items-center justify-center gap-2 bg-white text-slate-800 font-medium py-2.5 rounded-lg hover:bg-slate-100 transition">
+                <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                Verify with Google
+            </button>
+            <p id="google-status" class="text-xs text-center text-emerald-400 hidden">✔ Google Account Verified</p>
+
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Set 4-Digit PIN</label>
+                <input type="password" id="pin-input" placeholder="****" maxlength="4" 
+                    class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-white text-center tracking-widest text-lg focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <button onclick="goToScreen(2)" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-lg transition mt-4">
+                Next Step
+            </button>
+        </div>
+
+        <!-- SCREEN 2: Role Selection (Student or Teacher) -->
+        <div id="screen-2" class="space-y-4 hidden">
+            <h2 class="text-lg font-semibold text-slate-200 border-b border-slate-700 pb-2">Step 2: Choose Your Profile Type</h2>
+            
+            <div class="grid grid-cols-2 gap-4 pt-2">
+                <button onclick="selectRole('student')" class="p-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-indigo-500 text-center transition">
+                    <div class="text-3xl mb-2">🎓</div>
+                    <div class="font-medium text-white">Student</div>
+                </button>
+                <button onclick="selectRole('teacher')" class="p-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-indigo-500 text-center transition">
+                    <div class="text-3xl mb-2">👨‍🏫</div>
+                    <div class="font-medium text-white">Teacher</div>
+                </button>
+            </div>
+            
+            <button onclick="goToScreen(1)" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-300 font-medium py-2 rounded-lg text-sm mt-4">
+                Back
+            </button>
+        </div>
+
+        <!-- SCREEN 3: Profile Details Entry -->
+        <div id="screen-3" class="space-y-4 hidden">
+            <h2 id="screen-3-title" class="text-lg font-semibold text-slate-200 border-b border-slate-700 pb-2">Step 3: Enter Details</h2>
+            
+            <!-- Student Form (10 Levels) -->
+            <div id="student-form" class="space-y-3 max-h-72 overflow-y-auto pr-1">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs text-indigo-400">Educational Milestones (10 Levels)</span>
+                    <button onclick="autoFillStudent()" class="text-xs bg-slate-700 px-2 py-1 rounded text-indigo-300 hover:bg-slate-600">Auto-fill All</button>
+                </div>
+                <div id="education-levels-container" class="space-y-3">
+                    <!-- Dynamic 10 level items injected here -->
+                </div>
+            </div>
+
+            <!-- Teacher Form (Multiple Schools/Colleges History) -->
+            <div id="teacher-form" class="space-y-3 max-h-72 overflow-y-auto pr-1 hidden">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs text-indigo-400">Teaching History & Service Records</span>
+                    <button onclick="addTeacherRow()" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-2 py-1 rounded">
+                        + Add School/College
+                    </button>
+                </div>
+                <div id="teacher-schools-container" class="space-y-3">
+                    <!-- Dynamic Teacher records injected here -->
+                </div>
+            </div>
+
+            <button onclick="goToScreen(4)" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-lg transition mt-2">
+                Save Profile & Continue
+            </button>
+        </div>
+
+        <!-- SCREEN 4: Directory & Filters -->
+        <div id="screen-4" class="space-y-4 hidden">
+            <h2 class="text-lg font-semibold text-slate-200 border-b border-slate-700 pb-2">Step 4: Search Directory & Filters</h2>
+            
+            <div class="space-y-3">
+                <input type="text" placeholder="Search by Town or School name..." 
+                    class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white">
+                <div class="grid grid-cols-2 gap-2">
+                    <select class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white">
+                        <option>All Batches</option>
+                        <option>2010 - 2012</option>
+                        <option>2015 - 2017</option>
+                    </select>
+                    <select class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white">
+                        <option>All Profiles</option>
+                        <option>Students</option>
+                        <option>Teachers</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-700 rounded-xl p-3 space-y-2">
+                <div class="flex justify-between items-center text-xs border-b border-slate-800 pb-2">
+                    <span class="font-medium text-white">Mahesh (Student)</span>
+                    <span class="text-indigo-400">Vijayawada High School (2010)</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-medium text-white">Subba Rao (Teacher)</span>
+                    <span class="text-emerald-400">Bapatla High School (2012-2017)</span>
+                </div>
+            </div>
+
+            <button onclick="goToScreen(1)" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-300 font-medium py-2 rounded-lg text-sm">
+                Restart Demo
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let userRole = 'student';
+        let teacherRecordCount = 0;
+
+        function simulateGoogleAuth() {
+            document.getElementById('google-status').classList.remove('hidden');
+        }
+
+        function goToScreen(screenNumber) {
+            for(let i=1; i<=4; i++) {
+                document.getElementById(`screen-${i}`).classList.add('hidden');
+            }
+            document.getElementById(`screen-${screenNumber}`).classList.remove('hidden');
+            
+            if(screenNumber === 3) {
+                if(userRole === 'student') {
+                    loadEducationLevels();
+                } else {
+                    loadTeacherInitialRows();
+                }
+            }
+        }
+
+        function selectRole(role) {
+            userRole = role;
+            document.getElementById('screen-3-title').innerText = role === 'student' ? 'Step 3: Student Details (10 Levels)' : 'Step 3: Teacher Work History';
+            if(role === 'student') {
+                document.getElementById('student-form').classList.remove('hidden');
+                document.getElementById('teacher-form').classList.add('hidden');
+            } else {
+                document.getElementById('student-form').classList.add('hidden');
+                document.getElementById('teacher-form').classList.remove('hidden');
+            }
+            goToScreen(3);
+        }
+
+        function loadEducationLevels() {
+            const container = document.getElementById('education-levels-container');
+            if(container.children.length > 0) return;
+            
+            const levels = [
+                "1st to 5th Class (Primary)", "6th & 7th Class (Middle)", "8th to 10th Class (High School)",
+                "Polytechnic / Diploma", "ITI Course", "Intermediate (11th & 12th)", 
+                "Graduation (Degree)", "Post Graduation (PG)", "Doctorate / PhD", "Vocational / Certification"
+            ];
+
+            levels.forEach((lvl, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-slate-900 p-2.5 rounded-lg border border-slate-700/60 space-y-2";
+                div.innerHTML = `
+                    <div class="text-xs font-medium text-indigo-300">${index+1}. ${lvl}</div>
+                    <input type="text" placeholder="School / College Name" class="s-name-${index} w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" placeholder="From Year" class="s-from-${index} w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+                        <input type="text" placeholder="To Year" class="s-to-${index} w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function autoFillStudent() {
+            const firstSchool = document.querySelector('.s-name-0').value || "ZPHS High School";
+            const firstFrom = document.querySelector('.s-from-0').value || "2005";
+            const firstTo = document.querySelector('.s-to-0').value || "2010";
+
+            for(let i=0; i<10; i++) {
+                const n = document.querySelector(`.s-name-${i}`);
+                const f = document.querySelector(`.s-from-${i}`);
+                const t = document.querySelector(`.s-to-${i}`);
+                if(n) n.value = firstSchool;
+                if(f) f.value = firstFrom;
+                if(t) t.value = firstTo;
+            }
+        }
+
+        function loadTeacherInitialRows() {
+            const container = document.getElementById('teacher-schools-container');
+            if(container.children.length === 0) {
+                // Add 3 default rows to start with
+                for(let i=0; i<3; i++) {
+                    addTeacherRow();
+                }
+            }
+        }
+
+        function addTeacherRow() {
+            teacherRecordCount++;
+            const container = document.getElementById('teacher-schools-container');
+            const div = document.createElement('div');
+            div.className = "bg-slate-900 p-2.5 rounded-lg border border-slate-700/60 space-y-2 relative";
+            div.innerHTML = `
+                <div class="flex justify-between items-center text-xs font-medium text-indigo-300">
+                    <span>School / College #${teacherRecordCount}</span>
+                </div>
+                <input type="text" placeholder="School / College Name" class="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" placeholder="From Year (e.g. 2015)" class="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+                    <input type="text" placeholder="To Year (e.g. 2018)" class="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+                </div>
+                <input type="text" placeholder="Subject Taught (e.g. Maths / English)" class="w-full px-2 py-1.5 bg-slate-800 border border-slate-700 rounded text-xs text-white">
+            `;
+            container.appendChild(div);
+        }
+    </script>
+</body>
+</html>
