@@ -10,74 +10,92 @@
 
     <header class="bg-blue-600 text-white shadow-md">
         <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">BackToBench.in</h1>
-            <div id="authStatus" class="text-sm bg-blue-700 px-3 py-1 rounded-full">Please Login</div>
+            <h1 class="text-2xl font-bold tracking-wide">BackToBench.in</h1>
+            <div id="authStatus" class="text-sm bg-blue-700 px-3 py-1 rounded-full font-medium">Please Login</div>
         </div>
     </header>
 
     <main class="max-w-4xl mx-auto px-4 py-8">
         
-        <!-- 1. Login Section -->
+        <!-- 1. Authentication Section -->
         <section id="authSection" class="bg-white p-6 rounded-xl shadow-md mb-8">
             <h2 class="text-xl font-semibold mb-4 text-blue-600">Mobile & PIN Login</h2>
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Mobile Number</label>
-                    <input type="tel" id="loginMobile" placeholder="10-digit number" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
+                    <input type="tel" id="loginMobile" placeholder="10-digit mobile number" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">4-Digit PIN</label>
-                    <input type="password" id="loginPin" maxlength="4" placeholder="••••" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
+                    <input type="password" id="loginPin" maxlength="4" placeholder="••••" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
-                <button id="loginBtn" class="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg hover:bg-blue-700 font-semibold">
-                    Login / Continue
+                <button id="loginBtn" class="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg hover:bg-blue-700 font-semibold transition">
+                    Login / Register
                 </button>
             </div>
         </section>
 
-        <!-- 2. Profile Form Section (Hidden until login) -->
+        <!-- 2. Profile Form Section -->
         <section id="profileSection" class="bg-white p-6 rounded-xl shadow-md mb-8 hidden">
-            <h2 class="text-xl font-semibold mb-4 text-blue-600">Add Your Profile</h2>
-            <form id="profileForm" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input type="text" id="fullName" required class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
-                </div>
+            <h2 class="text-xl font-semibold mb-4 text-blue-600">Create / Update Profile</h2>
+            <form id="profileForm" class="space-y-6">
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Select Role</label>
-                    <select id="profileType" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
-                        <option value="Student">Student</option>
-                        <option value="Teacher">Teacher</option>
-                    </select>
-                </div>
-
-                <!-- Student Specific Education Level -->
-                <div id="studentLevelDiv">
-                    <label class="block text-sm font-medium text-gray-700">Education Level / Class</label>
-                    <select id="eduLevel" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
-                        <option value="1st to 5th Class (Primary)">1st to 5th Class (Primary)</option>
-                        <option value="6th to 10th Class (High School)">6th to 10th Class (High School)</option>
-                        <option value="Intermediate">Intermediate</option>
-                        <option value="Degree">Degree</option>
-                        <option value="PG">PG</option>
-                        <option value="PhD">PhD</option>
-                        <option value="MD">MD</option>
-                    </select>
+                    <label class="block text-sm font-medium text-gray-700">Full Name *</label>
+                    <input type="text" id="fullName" required placeholder="Enter full name" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Institution Name (School/College/University)</label>
-                    <input type="text" id="instName" required placeholder="e.g. ZP High School / College Name" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-700">Role *</label>
+                    <select id="profileType" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg bg-white">
+                        <option value="Student">Student (Alumni)</option>
+                        <option value="Teacher">Teacher / Faculty</option>
+                    </select>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Batch Year / Pass-out Year</label>
-                    <input type="number" id="batchYear" required placeholder="e.g. 2006" class="mt-1 w-full p-2.5 border border-gray-300 rounded-lg">
+                <!-- Multiple Education Levels Section -->
+                <div id="educationLevelsBlock" class="space-y-4 border-t border-b py-4 border-gray-200">
+                    <h3 class="font-bold text-gray-800 text-lg">Educational Timeline (Fill Applicable Fields)</h3>
+                    
+                    <!-- 1st to 5th Class -->
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 space-y-2">
+                        <h4 class="font-semibold text-blue-900 text-sm">1. Primary School (1st to 5th Class)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="primarySchool" placeholder="School Name & Location" class="p-2 border rounded-md text-sm w-full">
+                            <input type="number" id="primaryYear" placeholder="Passout Year (e.g. 2001)" class="p-2 border rounded-md text-sm w-full">
+                        </div>
+                    </div>
+
+                    <!-- 6th to 10th Class -->
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 space-y-2">
+                        <h4 class="font-semibold text-blue-900 text-sm">2. High School (6th to 10th Class)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="highSchool" placeholder="School Name & Location" class="p-2 border rounded-md text-sm w-full">
+                            <input type="number" id="highYear" placeholder="Passout Year (e.g. 2006)" class="p-2 border rounded-md text-sm w-full">
+                        </div>
+                    </div>
+
+                    <!-- Intermediate / Diploma -->
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 space-y-2">
+                        <h4 class="font-semibold text-blue-900 text-sm">3. Intermediate / Polytechnic</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="interCollege" placeholder="College Name & Location" class="p-2 border rounded-md text-sm w-full">
+                            <input type="number" id="interYear" placeholder="Passout Year (e.g. 2008)" class="p-2 border rounded-md text-sm w-full">
+                        </div>
+                    </div>
+
+                    <!-- Degree / PG / PhD / MD -->
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 space-y-2">
+                        <h4 class="font-semibold text-blue-900 text-sm">4. Higher Education (Degree / PG / PhD / MD)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <input type="text" id="higherCollege" placeholder="Degree/College Name" class="p-2 border rounded-md text-sm w-full">
+                            <input type="number" id="higherYear" placeholder="Passout Year (e.g. 2011)" class="p-2 border rounded-md text-sm w-full">
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit" class="w-full bg-green-600 text-white py-2.5 px-4 rounded-lg hover:bg-green-700 font-semibold">
-                    Save Profile
+                <button type="submit" id="saveBtn" class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 font-bold transition shadow">
+                    Save Complete Profile
                 </button>
             </form>
         </section>
@@ -86,11 +104,11 @@
         <section class="bg-white p-6 rounded-xl shadow-md">
             <h2 class="text-xl font-semibold mb-4 text-blue-600">Alumni Directory</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <input type="text" id="filterInst" placeholder="Search by School/College..." class="w-full p-2.5 border border-gray-300 rounded-lg">
-                <input type="number" id="filterBatch" placeholder="Search by Batch Year..." class="w-full p-2.5 border border-gray-300 rounded-lg">
+                <input type="text" id="filterInst" placeholder="Filter by School/College..." class="w-full p-2.5 border border-gray-300 rounded-lg">
+                <input type="number" id="filterBatch" placeholder="Filter by Batch Year..." class="w-full p-2.5 border border-gray-300 rounded-lg">
             </div>
-            <div id="profilesList" class="space-y-3">
-                <p class="text-gray-500">Loading data...</p>
+            <div id="profilesList" class="space-y-4">
+                <p class="text-gray-500">Loading directory data...</p>
             </div>
         </section>
 
@@ -115,22 +133,13 @@
 
         let currentUserMobile = null;
 
-        // Toggle Education Level based on Student/Teacher selection
-        document.getElementById('profileType').addEventListener('change', (e) => {
-            const studentDiv = document.getElementById('studentLevelDiv');
-            if (e.target.value === 'Teacher') {
-                studentDiv.style.display = 'none';
-            } else {
-                studentDiv.style.display = 'block';
-            }
-        });
-
+        // Login Action
         document.getElementById('loginBtn').addEventListener('click', () => {
             const mobile = document.getElementById('loginMobile').value.trim();
             const pin = document.getElementById('loginPin').value.trim();
 
             if (mobile.length !== 10 || pin.length !== 4) {
-                alert('Please enter valid 10-digit mobile and 4-digit PIN.');
+                alert('Please enter valid 10-digit mobile number and 4-digit PIN.');
                 return;
             }
 
@@ -138,83 +147,72 @@
             document.getElementById('authStatus').innerText = `Logged in: ${mobile}`;
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('profileSection').classList.remove('hidden');
+            alert('Login successful!');
         });
 
+        // Save Action with Multi-Level Education Support
         const profileForm = document.getElementById('profileForm');
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            const submitBtn = document.getElementById('saveBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Saving to database...";
+
             const fullName = document.getElementById('fullName').value.trim();
             const profileType = document.getElementById('profileType').value;
-            const eduLevel = profileType === 'Student' ? document.getElementById('eduLevel').value : 'Faculty / Teacher';
-            const instName = document.getElementById('instName').value.trim();
-            const batchYear = document.getElementById('batchYear').value.trim();
+            
+            const primarySchool = document.getElementById('primarySchool').value.trim();
+            const primaryYear = document.getElementById('primaryYear').value.trim();
+            
+            const highSchool = document.getElementById('highSchool').value.trim();
+            const highYear = document.getElementById('highYear').value.trim();
+            
+            const interCollege = document.getElementById('interCollege').value.trim();
+            const interYear = document.getElementById('interYear').value.trim();
+            
+            const higherCollege = document.getElementById('higherCollege').value.trim();
+            const higherYear = document.getElementById('higherYear').value.trim();
+
+            // Combined search index field to allow global search
+            const allSchoolsSearch = `${primarySchool} ${highSchool} ${interCollege} ${higherCollege}`.toLowerCase();
 
             try {
                 await addDoc(collection(db, "profiles"), {
                     mobile: currentUserMobile,
-                    fullName,
-                    profileType,
-                    eduLevel,
-                    instName: instName.toLowerCase(),
-                    originalInst: instName,
-                    batchYear: Number(batchYear),
+                    fullName: fullName,
+                    profileType: profileType,
+                    primarySchool: primarySchool,
+                    primaryYear: primaryYear ? Number(primaryYear) : null,
+                    highSchool: highSchool,
+                    highYear: highYear ? Number(highYear) : null,
+                    interCollege: interCollege,
+                    interYear: interYear ? Number(interYear) : null,
+                    higherCollege: higherCollege,
+                    higherYear: higherYear ? Number(higherYear) : null,
+                    searchIndex: allSchoolsSearch,
                     createdAt: new Date()
                 });
+
                 alert('Profile saved successfully!');
                 profileForm.reset();
                 loadProfiles();
             } catch (error) {
-                console.error("Error saving:", error);
-                alert('Failed to save profile.');
+                console.error("Firebase write error:", error);
+                alert('Database save failed. Check internet connection or permissions.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Save Complete Profile";
             }
         });
 
+        // Load & Filter Directory
         async function loadProfiles() {
             const listContainer = document.getElementById('profilesList');
-            listContainer.innerHTML = '<p class="text-gray-500">Loading...</p>';
+            listContainer.innerHTML = '<p class="text-gray-500">Loading directory...</p>';
             
             const filterInst = document.getElementById('filterInst').value.trim().toLowerCase();
             const filterBatch = document.getElementById('filterBatch').value.trim();
 
             try {
-                const querySnapshot = await getDocs(collection(db, "profiles"));
-                if (querySnapshot.empty) {
-                    listContainer.innerHTML = '<p class="text-gray-500">No profiles found.</p>';
-                    return;
-                }
-
-                listContainer.innerHTML = '';
-                let count = 0;
-
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    if (filterInst && !data.instName.includes(filterInst)) return;
-                    if (filterBatch && data.batchYear != filterBatch) return;
-
-                    count++;
-                    listContainer.innerHTML += `
-                        <div class="p-4 border rounded-lg bg-gray-50 flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-lg text-blue-800">${data.fullName} <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">${data.profileType}</span></h3>
-                                <p class="text-sm text-gray-600">Level: <strong>${data.eduLevel}</strong> | Inst: ${data.originalInst || data.instName} | Batch: ${data.batchYear}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                if (count === 0) {
-                    listContainer.innerHTML = '<p class="text-gray-500">No matching profiles.</p>';
-                }
-            } catch (error) {
-                console.error("Error loading:", error);
-                listContainer.innerHTML = '<p class="text-red-500">Error loading data.</p>';
-            }
-        }
-
-        document.getElementById('filterInst').addEventListener('input', loadProfiles);
-        document.getElementById('filterBatch').addEventListener('input', loadProfiles);
-
-        loadProfiles();
-    </script>
-</body>
-</html>
+                const querySnapshot = await getDocs(collection(db,
